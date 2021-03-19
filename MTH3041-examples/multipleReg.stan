@@ -18,13 +18,17 @@ parameters{
   vector[p] beta; // Coefficients
   real<lower=0> sigma; // Standard deviation of y
 }
+transformed parameters {
+  vector[N] theta;
+  theta = alpha+X*beta; // Use a non centred parametrisation
+}
 model{
   // Priors
   alpha ~ normal(alpha_mean, alpha_sd);
   beta[1:p] ~ normal(beta_mean[1:p],beta_sd[1:p]);
   sigma ~ normal(0,sigma_sd);
   // top layer
-  y ~ normal(alpha+X*beta, sigma);
+  y ~ normal(theta, sigma);
 }
 generated quantities{
   // Generate samples from the model to validate results
