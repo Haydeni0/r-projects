@@ -18,6 +18,8 @@ library(mice)
 #   - Continuous or discrete?
 #   - strictly positive?
 
+# Training and testing datasets?
+
 ## Make a training and testing dataset ----
 num_training <- 8000
 num_testing <- nrow(offers_made) - num_training

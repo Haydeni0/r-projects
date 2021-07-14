@@ -11,7 +11,7 @@ num_testing <- nrow(testing_data)
 # Modelling SalePrice against all explanatory variables (except trade values)
 model1 <- glm(SalePrice ~ Condition + Age + Mileage.x + PreviousOwners + ServiceHistory + Make + 
                 TransmissionType + FuelType + Colour + BodyType, 
-              family = gaussian(link = "log"), data = training_data)
+              family = poisson(link = "log"), data = training_data)
 # Modelling SalePrice against all explanatory variables (except trade values and NA columns)
 model2 <- glm(SalePrice ~ Condition + Age + Mileage.x + PreviousOwners + ServiceHistory + Make + Colour, 
               family = gaussian(link = "identity"), data = training_data)
@@ -23,7 +23,7 @@ model3 <- glm(SalePrice ~ TradeValuation1,
 # Modelling SalePrice against all explanatory variables
 model4 <- glm(SalePrice ~ log(TradeValuation1) + Condition + Age + Mileage.x + PreviousOwners + ServiceHistory + Make + 
                 TransmissionType + FuelType + Colour + BodyType, 
-              family = gaussian(link = "log"), data = training_data)
+              family = Gamma(link = "log"), data = training_data)
 
 # Model 4 is obviously the best, but doesnt predict from data with missing values, and also includes the trade valuation which 
 # might be the thing we want to predict?
@@ -31,7 +31,7 @@ model4 <- glm(SalePrice ~ log(TradeValuation1) + Condition + Age + Mileage.x + P
 # Model 2 is far less accurate, but can predict from data with missing TransmissionType, FuelType and BodyType
 # I feel like model3 is just cheating, as we just use tradevaluation to explain the sale price..
 
-pmodel <- model2
+pmodel <- model1
 rm(pred.response)
 
 summary(pmodel)
